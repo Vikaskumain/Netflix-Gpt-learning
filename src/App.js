@@ -1,11 +1,12 @@
 
-import './App.css';
-
+import Body from "./Components/Body";
+// import Browse from "./Components/Browse";
 function App() {
   return (
-    <div className="App">
-      <h1 className="bg-green-400 text-3xl">hello this is the netfilx-gpt app</h1>
-    </div>
+    <>
+      <Body />
+      {/* <Browse /> */}
+    </>
   );
 }
 
