@@ -1,8 +1,21 @@
-import React, { useState } from "react";
+import React, { useState ,useRef } from "react";
 import Header from "./Header";
+import Validationform from "../Utils/Validationform";
 
 function Login() {
   const [issignfrom, setSignform] = useState(true);
+  const [errormessage, setErrormessage] =useState()
+
+  const email =useRef(null)
+  const password =useRef(null)
+  const name =useRef(null)
+
+  const handlefromValidation =()=>{
+    // validation the form data 
+    const message = Validationform(email.current.value,password.current.value,name.current.value)
+    setErrormessage(message)
+
+  }
 
   const togglesignform = () => {
     setSignform(!issignfrom);
@@ -18,27 +31,32 @@ function Login() {
           alt="backgroundimage"
         />
       </div>
-      <form className="w-3/12 bg-black my-36 p-12 mx-auto  right-0 left-0 text-white absolute rounded-lg bg-opacity-80">
+      <form onSubmit={(e)=>e.preventDefault()} className="w-3/12 bg-black my-36 p-12 mx-auto  right-0 left-0 text-white absolute rounded-lg bg-opacity-80">
         <h1 className="font-bold text-3xl py-4">
           {issignfrom ? "Sign In" : "Sign Up"}{" "}
         </h1>
         {!issignfrom && (<input
           type="text"
+          ref={name}
           placeholder="Full Name"
           className="p-4 my-3 w-full bg-gray-700 rounded-sm"
         />)}
 
         <input
           type="text"
+          ref={email}
           placeholder="Email Address"
           className="p-4 my-3 w-full bg-gray-700 rounded-sm "
         />
         <input
+        ref={password}
+
           type="password"
           placeholder="Password"
           className="p-4 my-3 w-full bg-gray-700 rounded-sm "
         />
-        <button className="bg-red-700 p-3 my-3 w-full rounded-lg">
+        <p className="text-red-500 font-bold">{errormessage}</p>
+        <button className="bg-red-700 p-3 my-3 w-full rounded-lg" onClick={handlefromValidation}>
           {issignfrom ? "Sign In " : "Sign Up"}
         </button>
         <input className="" type="checkbox" />
