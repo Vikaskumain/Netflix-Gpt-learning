@@ -1,6 +1,8 @@
 import React, { useState ,useRef } from "react";
 import Header from "./Header";
 import Validationform from "../Utils/Validationform";
+import {  createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../Utils/firebase"
 
 function Login() {
   const [issignfrom, setSignform] = useState(true);
@@ -8,12 +10,47 @@ function Login() {
 
   const email =useRef(null)
   const password =useRef(null)
-  const name =useRef(null)
+  // const name =useRef(null)
 
   const handlefromValidation =()=>{
     // validation the form data 
-    const message = Validationform(email.current.value,password.current.value,name.current.value)
+    const message = Validationform(email.current.value,password.current.value,)
     setErrormessage(message)
+    if(message) return
+
+    if(!issignfrom){
+    //  sign up form logic here
+    createUserWithEmailAndPassword(auth, email.current.value,password.current.value,)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log(user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setErrormessage(errorCode+ "-" +errorMessage)
+    // ..
+  });
+
+    }
+    else{
+      // sign in from logic here 
+      signInWithEmailAndPassword(auth, email.current.value,password.current.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(errorCode+ "-" +errorMessage)
+  });
+    }
+   
 
   }
 
@@ -22,7 +59,7 @@ function Login() {
   };
 
   return (
-    <div className="">
+    <div >
       <Header />
       <div>
         <img
@@ -31,13 +68,14 @@ function Login() {
           alt="backgroundimage"
         />
       </div>
+
       <form onSubmit={(e)=>e.preventDefault()} className="w-3/12 bg-black my-36 p-12 mx-auto  right-0 left-0 text-white absolute rounded-lg bg-opacity-80">
         <h1 className="font-bold text-3xl py-4">
           {issignfrom ? "Sign In" : "Sign Up"}{" "}
         </h1>
         {!issignfrom && (<input
           type="text"
-          ref={name}
+          // ref={name}
           placeholder="Full Name"
           className="p-4 my-3 w-full bg-gray-700 rounded-sm"
         />)}
