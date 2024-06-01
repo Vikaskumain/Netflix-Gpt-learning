@@ -10,7 +10,7 @@ function Login() {
 
   const email =useRef(null)
   const password =useRef(null)
-  // const name =useRef(null)
+  const name =useRef(null)
 
   const handlefromValidation =()=>{
     // validation the form data 
@@ -75,7 +75,7 @@ function Login() {
         </h1>
         {!issignfrom && (<input
           type="text"
-          // ref={name}
+          ref={name}
           placeholder="Full Name"
           className="p-4 my-3 w-full bg-gray-700 rounded-sm"
         />)}
