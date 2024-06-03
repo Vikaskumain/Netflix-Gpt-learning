@@ -1,11 +1,12 @@
 import React from 'react'
+import Header from './Header';
 
 function Browse() {
   return (
     <div>
-      <h1>this is the browser</h1>
+      <Header/>
     </div>
   )
 }
 
-export default Browse
+export default Browse;
