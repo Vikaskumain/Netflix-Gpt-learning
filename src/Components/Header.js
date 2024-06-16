@@ -1,25 +1,50 @@
-import React from "react";
+
 import Netfilx_logo from "../Images/Netflix_Logo.png";
 import {  signOut } from "firebase/auth"
 import { auth } from "../Utils/firebase";
-import { useNavigate } from "react-router";
+import {  useNavigate,  } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addUser, removeUser } from "../Utils/UserSlice";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
 
 function Header() {
+  const dispatch = useDispatch();
+  const navigate =useNavigate()
   
-const navigate = useNavigate()
+
 const user =useSelector((store=>store.user))
 
   const handlSignout =()=>{
     signOut(auth).then(() => {
       // Sign-out successful.
-      navigate("/")
+    
     }).catch((error) => {
       // An error happened.
-      navigate("/error")
+      
 
     });
   } 
+
+  useEffect(() => {
+     const unsubscribe =onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        const { uid, email, displayName,photoURL } = user;
+        dispatch(addUser({ uid: uid, email: email, displayName: displayName,photoURL:photoURL }));
+      navigate("/browser")
+      } else {
+        // User is signed out
+        dispatch(removeUser());
+        navigate("/")
+      }
+
+    });
+    // The 'unsubscribe' function in this code snippet serves the purpose of stopping or cleaning up a previous action,
+    
+    return ()=> unsubscribe()
+  }, [dispatch,navigate]);
 
   return (
     <div className="absolute w-screen px-20 py-3 bg-gradient-to-b from-black  flex justify-between z-10">

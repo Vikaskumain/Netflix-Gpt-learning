@@ -6,15 +6,14 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../Utils/firebase";
-import { useNavigate } from "react-router";
 import { updateProfile } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser } from "../Utils/UserSlice";
+import {BACKGROUND_IMG} from "../Utils/Constaint/Constaint"
 
 function Login() {
   const [issignfrom, setSignform] = useState(true);
   const [errormessage, setErrormessage] = useState();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const email = useRef(null);
@@ -58,7 +57,7 @@ function Login() {
                   photoURL: photoURL,
                 })
               );
-              navigate("/browser");
+              
             })
             .catch((error) => {
               setErrormessage(errormessage, error);
@@ -81,7 +80,7 @@ function Login() {
           // Signed in
           const user = userCredential.user;
           console.log(user);
-          navigate("/");
+          
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -101,7 +100,7 @@ function Login() {
       <div>
         <img
           className="absolute"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/9f46b569-aff7-4975-9b8e-3212e4637f16/453ba2a1-6138-4e3c-9a06-b66f9a2832e4/IN-en-20240415-popsignuptwoweeks-perspective_alpha_website_large.jpg"
+          src={BACKGROUND_IMG}
           alt="backgroundimage"
         />
       </div>
